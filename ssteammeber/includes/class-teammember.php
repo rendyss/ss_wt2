@@ -19,12 +19,17 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 			$this->pluginName    = "ssteammember";
 			$this->pluginVersion = "1.0.0";
 			$this->register_custom_post_type();
+			$this->change_title_field();
 			$this->register_metabox();
 			$this->load_front_end_assets();
 		}
 
 		function register_custom_post_type() {
 			add_action( 'init', array( $this, 'custom_post_type' ) );
+		}
+
+		function change_title_field() {
+			add_filter( 'enter_title_here', array( $this, 'title_field' ) );
 		}
 
 		function register_metabox() {
@@ -36,6 +41,14 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 		function load_front_end_assets() {
 			wp_enqueue_script( $this->pluginName . ".js", plugin_dir_url( __FILE__ ) . 'assets/js/ssteammember.js', array( 'jquery' ), $this->pluginVersion, true );
 			wp_enqueue_style( $this->pluginName . ".css", plugin_dir_url( __FILE__ ) . 'assets/ss/ssteammember.js', array(), $this->pluginVersion );
+		}
+
+		function title_field( $input ) {
+			if ( 'team-member' === get_post_type() ) {
+				return __( 'Enter team member name here' );
+			}
+
+			return $input;
 		}
 
 		function custom_post_type() {
@@ -105,6 +118,21 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 				'attributes' => array(
 					'required' => 'required'
 				)
+			) );
+			$cmb_teammember->add_field( array(
+				'name'         => __( 'Image' ),
+				'id'           => $this->pluginName . "_image",
+				'type'         => 'file',
+				'options'      => array(
+					'url' => false,
+				),
+				'text'         => array(
+					'add_upload_file_text' => __( 'Add Image' )
+				),
+				'query_args'   => array(
+					'type' => array( 'image/gif', 'image/jpeg', 'image/png' ),
+				),
+				'preview_size' => 'medium',
 			) );
 		}
 	}
