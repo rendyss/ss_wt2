@@ -19,11 +19,18 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 			$this->pluginName    = "ssteammember";
 			$this->pluginVersion = "1.0.0";
 			$this->register_custom_post_type();
+			$this->register_metabox();
 			$this->load_front_end_assets();
 		}
 
 		function register_custom_post_type() {
 			add_action( 'init', array( $this, 'custom_post_type' ) );
+		}
+
+		function register_metabox() {
+			require plugin_dir_path( __FILE__ ) . 'class-ssteammember-metabox.php';
+			SSTeamMemberMetaBox::load_3rd_party();
+			add_action( 'cmb2_admin_init', array( $this, 'teammember_metabox' ) );
 		}
 
 		function load_front_end_assets() {
@@ -63,6 +70,42 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 				'menu_icon'           => 'dashicons-groups'
 			);
 			register_post_type( 'team-member', $args_teamMember );
+		}
+
+		function teammember_metabox() {
+			$cmb_teammember = new_cmb2_box( array(
+				'id'           => $this->pluginName . "_metabox",
+				'title'        => esc_html__( 'Personal Detail' ),
+				'object_types' => array( 'team-member' ), // Post type
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true, // Show field names on the left
+			) );
+			$cmb_teammember->add_field( array(
+				'name'       => __( 'Position' ),
+				'id'         => $this->pluginName . "_position",
+				'type'       => 'text',
+				'attributes' => array(
+					'required' => 'required',
+				),
+			) );
+			$cmb_teammember->add_field( array(
+				'name'       => __( 'Email' ),
+				'id'         => $this->pluginName . "_email",
+				'type'       => 'text_email',
+				'attributes' => array(
+					'required' => 'required',
+				),
+			) );
+			$cmb_teammember->add_field( array(
+				'name'       => __( 'Website' ),
+				'id'         => $this->pluginName . "_website",
+				'type'       => 'text_url',
+				'protocols'  => array( 'http', 'https' ),
+				'attributes' => array(
+					'required' => 'required'
+				)
+			) );
 		}
 	}
 }
