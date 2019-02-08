@@ -1,0 +1,43 @@
+.team {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    margin: auto;
+    text-align: center;
+    font-family: arial;
+    /*padding: 20px;*/
+    background: #fff;
+}
+
+.team.single {
+    max-width: 450px;
+}
+
+.team .cover {
+    height: 300px;
+}
+
+.team .position {
+    color: grey;
+    font-size: 18px;
+}
+
+.team .footer {
+    border: none;
+    outline: 0;
+    display: inline-block;
+    padding: 8px;
+    background-color: #333;
+    text-align: center;
+    cursor: pointer;
+    width: 100%;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+.team .footer a {
+    color: #fff;
+    margin: auto 5px;
+}
+
+.team .footer a:hover {
+    text-decoration: none;
+}

@@ -21,7 +21,9 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 			$this->register_custom_post_type();
 			$this->change_title_field();
 			$this->register_metabox();
+			$this->register_shortcode();
 			$this->load_front_end_assets();
+			$this->load_helper();
 		}
 
 		function register_custom_post_type() {
@@ -34,13 +36,24 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 
 		function register_metabox() {
 			require plugin_dir_path( __FILE__ ) . 'class-ssteammember-metabox.php';
-			SSTeamMemberMetaBox::load_3rd_party();
-			add_action( 'cmb2_admin_init', array( $this, 'teammember_metabox' ) );
+			$ssTeamMemberMetaBox = new SSTeamMemberMetaBox( $this->pluginName );
+			$ssTeamMemberMetaBox->assign_metabox();
 		}
 
 		function load_front_end_assets() {
-			wp_enqueue_script( $this->pluginName . ".js", plugin_dir_url( __FILE__ ) . 'assets/js/ssteammember.js', array( 'jquery' ), $this->pluginVersion, true );
-			wp_enqueue_style( $this->pluginName . ".css", plugin_dir_url( __FILE__ ) . 'assets/ss/ssteammember.js', array(), $this->pluginVersion );
+			wp_enqueue_script( $this->pluginName . ".js", plugin_dir_url( __DIR__ ) . 'assets/js/ssteammember.js', array( 'jquery' ), $this->pluginVersion, true );
+			wp_enqueue_style( $this->pluginName . ".css", plugin_dir_url( __DIR__ ) . 'assets/css/ssteammember.css', array(), $this->pluginVersion );
+			wp_enqueue_style( 'dashicons' );
+		}
+
+		function register_shortcode() {
+			require plugin_dir_path( __FILE__ ) . 'class-ssteammember-shortcode.php';
+			new SSTeamMemberShortCode( $this->pluginName );
+		}
+
+		function load_helper() {
+			require plugin_dir_path( __FILE__ ) . 'class-ssteammember-helper.php';
+			require plugin_dir_path( __FILE__ ) . 'class-ssteammember-io.php';
 		}
 
 		function title_field( $input ) {
@@ -83,57 +96,6 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 				'menu_icon'           => 'dashicons-groups'
 			);
 			register_post_type( 'team-member', $args_teamMember );
-		}
-
-		function teammember_metabox() {
-			$cmb_teammember = new_cmb2_box( array(
-				'id'           => $this->pluginName . "_metabox",
-				'title'        => esc_html__( 'Personal Detail' ),
-				'object_types' => array( 'team-member' ), // Post type
-				'context'      => 'normal',
-				'priority'     => 'high',
-				'show_names'   => true, // Show field names on the left
-			) );
-			$cmb_teammember->add_field( array(
-				'name'       => __( 'Position' ),
-				'id'         => $this->pluginName . "_position",
-				'type'       => 'text',
-				'attributes' => array(
-					'required' => 'required',
-				),
-			) );
-			$cmb_teammember->add_field( array(
-				'name'       => __( 'Email' ),
-				'id'         => $this->pluginName . "_email",
-				'type'       => 'text_email',
-				'attributes' => array(
-					'required' => 'required',
-				),
-			) );
-			$cmb_teammember->add_field( array(
-				'name'       => __( 'Website' ),
-				'id'         => $this->pluginName . "_website",
-				'type'       => 'text_url',
-				'protocols'  => array( 'http', 'https' ),
-				'attributes' => array(
-					'required' => 'required'
-				)
-			) );
-			$cmb_teammember->add_field( array(
-				'name'         => __( 'Image' ),
-				'id'           => $this->pluginName . "_image",
-				'type'         => 'file',
-				'options'      => array(
-					'url' => false,
-				),
-				'text'         => array(
-					'add_upload_file_text' => __( 'Add Image' )
-				),
-				'query_args'   => array(
-					'type' => array( 'image/gif', 'image/jpeg', 'image/png' ),
-				),
-				'preview_size' => 'medium',
-			) );
 		}
 	}
 }
