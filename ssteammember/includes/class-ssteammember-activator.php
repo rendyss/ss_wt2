@@ -14,6 +14,7 @@ if ( ! class_exists( 'SSTeamMember_Activator' ) ) {
 	class SSTeamMemberActivator {
 
 		static function activate() {
+			//Not really needed right now
 		}
 	}
 }

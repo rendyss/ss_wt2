@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 if ( ! class_exists( 'SSTeamMember_Deactivator' ) ) {
 	class SSTeamMemberDeactivator {
 		static function deactivate() {
-
+			//Not really needed right now
 		}
 	}
 }
