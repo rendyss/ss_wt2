@@ -54,7 +54,7 @@ if ( ! class_exists( 'SSTeamMemberShortCode' ) ) {
 						$result  .= "<div class=\"cover\" style=\"background: url($img_url) center no-repeat\"></div>";
 					}
 
-					$result .= $args['name'] ? "<h2>" . $detail->items['name'] . "</h2>" : "";
+					$result .= $args['name'] ? "<h3>" . $detail->items['name'] . "</h3>" : "";
 					$result .= $args['position'] ? "<p class=\"position\">" . $detail->items['position'][0] . "</p>" : "";
 					if ( $args['email'] or $args['website'] ) {
 						$result .= "<div class=\"footer\">";
@@ -78,7 +78,7 @@ if ( ! class_exists( 'SSTeamMemberShortCode' ) ) {
 							$result  .= "<div class=\"cover\" style=\"background: url($img_url) center no-repeat\"></div>";
 						}
 
-						$result .= $args['name'] ? "<h2>" . $item['name'] . "</h2>" : "";
+						$result .= $args['name'] ? "<h3>" . $item['name'] . "</h3>" : "";
 						$result .= $args['position'] ? "<p class=\"position\">" . $item['position'][0] . "</p>" : "";
 						if ( $args['email'] or $args['website'] ) {
 							$result .= "<div class=\"footer\">";
