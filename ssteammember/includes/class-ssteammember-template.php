@@ -4,6 +4,7 @@
  * User: ASUS
  * Date: 2/8/2019
  * Time: 9:41 AM
+ * Credit: https://www.daggerhart.com/simple-php-template-class/
  */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
