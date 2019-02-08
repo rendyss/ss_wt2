@@ -24,6 +24,7 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 			$this->register_shortcode();
 			$this->load_front_end_assets();
 			$this->load_helper();
+			$this->load_template();
 		}
 
 		function register_custom_post_type() {
@@ -54,6 +55,10 @@ if ( ! class_exists( 'SSTeamMember' ) ) {
 		function load_helper() {
 			require plugin_dir_path( __FILE__ ) . 'class-ssteammember-helper.php';
 			require plugin_dir_path( __FILE__ ) . 'class-ssteammember-io.php';
+		}
+
+		function load_template() {
+			require plugin_dir_path( __FILE__ ) . 'class-ssteammember-template.php';
 		}
 
 		function title_field( $input ) {

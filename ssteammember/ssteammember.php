@@ -22,6 +22,6 @@ register_activation_hook( __FILE__, 'activate_ssteammember' );
 register_deactivation_hook( __FILE__, 'deactivate_ssteammember' );
 
 //Include the main functions
-require plugin_dir_path( __FILE__ ) . 'includes/class-teammember.php';
+require plugin_dir_path( __FILE__ ) . 'includes/class-ssteammember.php';
 
 $ssTeamMember = new SSTeamMember();
