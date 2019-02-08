@@ -22,8 +22,32 @@ if ( ! class_exists( 'SSTeamMemberIO' ) ) {
 			$this->pluginName = $pluginName;
 		}
 
-		function display_all( $limit ) {
-			$result = new SSTeamMemberHelper();
+		function display( $limit ) {
+			$result      = new SSTeamMemberHelper();
+			$qTeamMember = new WP_Query( array(
+				'post_type'      => 'team-member',
+				'orderby'        => 'title',
+				'order'          => 'asc',
+				'posts_per_page' => $limit
+			) );
+			if ( $qTeamMember->have_posts() ) {
+				while ( $qTeamMember->have_posts() ) :
+					$qTeamMember->the_post();
+					$team_id         = get_the_ID();
+					$result->items[] = array(
+						'id'       => $team_id,
+						'name'     => get_the_title( $team_id ),
+						'position' => get_post_meta( $team_id, $this->pluginName . "_position" ),
+						'email'    => get_post_meta( $team_id, $this->pluginName . "_email" ),
+						'website'  => get_post_meta( $team_id, $this->pluginName . "_website" ),
+						'image'    => get_post_meta( $team_id, $this->pluginName . "_image" ),
+					);
+				endwhile;
+				$result->is_error = false;
+			} else {
+				$result->message = "No team member found";
+			}
+			wp_reset_query();
 
 			return $result;
 		}
